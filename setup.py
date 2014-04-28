@@ -2,29 +2,14 @@ import os
 
 from setuptools import setup, find_packages
 
-here = os.path.abspath(os.path.dirname(__file__))
-
 requires = [
-    'pyramid',
-    'pyramid_chameleon',
-    'pyramid_debugtoolbar',
-    'waitress',
-    ]
+    'pyramid              == 1.5',    # Web framework
+    'pyramid_mako         == 1.0.2',  # Templating library
+    'pyramid_debugtoolbar == 2.0.2',  # Used by pyramid for debugging toolbar
+    'waitress             == 0.8.8',  # Python WSGI server
+]
 
 setup(name='AlexanderSotoIo',
-      version='0.0',
-      description='AlexanderSotoIo',
-      long_description='AlxanderSotoIo',
-      classifiers=[
-        "Programming Language :: Python",
-        "Framework :: Pyramid",
-        "Topic :: Internet :: WWW/HTTP",
-        "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
-        ],
-      author='',
-      author_email='',
-      url='',
-      keywords='web pyramid pylons',
       packages=find_packages(),
       include_package_data=True,
       zip_safe=False,
@@ -35,4 +20,4 @@ setup(name='AlexanderSotoIo',
       [paste.app_factory]
       main = alexandersotoio:main
       """,
-      )
+)
