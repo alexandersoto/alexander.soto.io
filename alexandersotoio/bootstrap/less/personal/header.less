@@ -1,0 +1,29 @@
+// Styles for site header and headings
+
+@site-header-color: #555;
+.site-header {
+    background-color: @site-header-color;
+
+    #site-heading {
+        padding-top: 40px;
+        padding-bottom: 50px;
+
+        > a {
+            .h1;
+            color: white;
+            text-decoration: none;
+            letter-spacing: .17em;
+            font-size: 50px;
+
+            // Shrink size so text fits on small screens
+            @media(max-width: @screen-xs-max) {
+                font-size: 36px;
+            }
+        }
+    }
+}
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+    text-transform: uppercase;
+}

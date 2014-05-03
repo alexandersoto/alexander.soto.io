@@ -1,0 +1,157 @@
+// Styles for homepage
+
+#tag-line-container {
+    padding-bottom: 70px;
+    
+    #tag-line {
+        color: white;
+        font-size: 16px;
+    }
+}
+
+#about-me-container {
+    padding-top: 60px;
+    padding-bottom: 60px;
+
+    p {
+        font-size: 16px;
+
+        // Center text relative to image
+        margin-top: 76px;
+        @media(max-width: @screen-md-max) {
+            margin-top: 52px;
+        }
+        @media(max-width: @screen-sm-max) {
+            margin-top: 22px;
+        }
+        @media(max-width: @screen-xs-max) {
+            margin-top: 0px;
+        }
+    }
+
+    .img-responsive {
+        @media(max-width: @screen-xs-max) {
+            margin-bottom: 30px;    
+        }
+    }
+}
+
+@light-background: #e6e6e6;
+#resume-container {
+    background-color: @light-background;
+    padding-top: 60px;
+    padding-bottom: 35px;
+
+    #resume-btn {
+        .btn;
+        .btn-primary;
+        .btn-lg;
+        font-family: @headings-font-family;
+        text-transform: uppercase;
+        letter-spacing: .1em;
+        padding: 12px 50px;
+        margin-bottom: 45px;        
+    }
+
+    #icon-link-list {
+        .list-inline;
+        .text-center;      
+        padding-bottom: 10px;  
+
+        > li {
+            a {
+                > .fa-stack >.fa-circle {
+                    color: @brand-primary;
+
+                    &#white-fa-circle {
+                        color: white;
+                    }
+                }
+
+                cursor: pointer;
+            }
+                        
+            a:hover,
+            a:focus,
+            a:active {
+                > .fa-stack > .fa-circle {
+                    color: darken(@brand-primary, 8%);
+                }
+            }
+        }
+    }
+
+    p {
+        min-height: @line-height-computed;
+    }
+}
+
+#projects-container {
+    padding-top: 60px;
+    padding-bottom: 60px;
+
+    h2 {
+        margin-top: 0px;
+        margin-bottom: 30px;
+        letter-spacing: .09em;
+    }
+
+    .img-responsive {
+        margin-bottom: 30px;
+    }
+
+    .img-overlay-wrapper {
+        position: relative;
+
+        .img-overlay {
+            color: contrast(@brand-primary);
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            top: 0;
+            background-color: fade(@brand-primary, 90%);
+            opacity: 0;
+            .transition(opacity .25s ease);
+
+            &:hover {
+                opacity: 1;
+            }
+
+            h3 {
+                text-transform: uppercase;
+                padding-left: 10px;
+                padding-right: 10px;
+
+
+                // Shrink font so text fits on small screens
+                @media(max-width: @screen-md-max) {
+                    font-size: 22px;
+                }
+                @media(max-width: @screen-sm-max) {
+                    font-size: 20px;
+                }
+                @media(max-width: @screen-xs-max) {
+                    font-size: 14px;
+                }
+                @media(max-width: (@screen-xs-max/2)) {
+                    font-size: 12px;
+                }
+            }
+        }
+    }
+}
+
+// Vertically and horizontally center text in a div
+// via http://www.andy-howard.com/verticalAndHorizontalAlignment/index.html
+.box-center-outer {
+
+    display: table;
+    width: 100%;
+    height: 100%;
+
+    .box-center-inner {
+        display: table-cell;
+        vertical-align: middle;
+        text-align: center;
+    }
+}
