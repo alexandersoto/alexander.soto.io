@@ -11,7 +11,7 @@
     <div id="tag-line-container" class="container">
       <div class="row">
         <div class="col-xs-12 text-center">
-          <p id="tag-line">Product Designer &bull;  Business Strategist &bull; Computer Engineer</p>
+          <p id="tag-line">Computer Engineer &bull; Product Designer &bull;  Business Strategist</p>
         </div>
       </div>
     </div>
