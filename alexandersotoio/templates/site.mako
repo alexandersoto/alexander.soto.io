@@ -26,7 +26,7 @@
   <link rel="shortcut icon" href="${request.static_url('alexandersotoio:assets/static/images/favicon.ico')}"/>
 
   ## Styles    
-  <link rel='stylesheet' href="//fonts.googleapis.com/css?family=Open+Sans:400|Montserrat:400">
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:400|Montserrat:400">
   <link rel="stylesheet" href="${request.static_url('alexandersotoio:assets/css/bootstrap.css')}">
 
   ## Other needed css files / blocks

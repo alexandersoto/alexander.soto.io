@@ -1,0 +1,9 @@
+## Ignore files we didn't write
+node_modules/
+vendor/
+
+## Ignore optimized files
+build/
+
+## Ignore testing files
+spec/

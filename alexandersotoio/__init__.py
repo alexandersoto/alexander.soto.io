@@ -47,6 +47,7 @@ def configure_routes(config, settings):
     # Apps's git commit will determine url for assets that change frequently
     git_hash = get_git_hash()
     config.add_static_view('/css/' + git_hash, 'alexandersotoio:assets/css',    cache_max_age=static_max_age)
+    config.add_static_view('/js/' + git_hash,  'alexandersotoio:assets/js',     cache_max_age=static_max_age)
     config.add_static_view('/static'         , 'alexandersotoio:assets/static', cache_max_age=static_max_age)
     
     # Routes
