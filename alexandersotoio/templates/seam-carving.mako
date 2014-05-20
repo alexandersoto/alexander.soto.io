@@ -51,6 +51,7 @@
 
 <script src="${request.static_url('alexandersotoio:static/js/jquery-1.11.1.js')}"></script>
 <script src="${request.static_url('alexandersotoio:static/js/jquery-ui-1.10.4.js')}"></script>
+<script src="${request.static_url('alexandersotoio:static/js/jquery-ui-touch-punch-0.2.3.js')}"></script>
 <script src="${request.static_url('alexandersotoio:static/js/seam.js')}"></script>
 
 </%block>

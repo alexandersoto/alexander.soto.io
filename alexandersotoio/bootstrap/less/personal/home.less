@@ -6,7 +6,11 @@
     #tag-line {
         color: white;
         font-size: 16px;
+        @media(max-width: @screen-xs-max) {
+            font-size: 10px;
+        }
     }
+
 }
 
 #about-me-container {
@@ -103,6 +107,13 @@
     .img-overlay-wrapper {
         position: relative;
 
+        &:hover {
+            .img-overlay {
+                display: block;
+                //opacity: 1;
+            }
+        }
+
         .img-overlay {
             color: contrast(@brand-primary);
             position: absolute;
@@ -110,18 +121,16 @@
             width: 100%;
             top: 0;
             background-color: fade(@brand-primary, 90%);
-            opacity: 0;
-            .transition(opacity .25s ease);
-
-            &:hover {
-                opacity: 1;
-            }
+            
+            // transitions break on iphone, so disable for now
+            //opacity: 0;
+            //.transition(opacity .25s ease);
+            display: none;
 
             h3 {
                 text-transform: uppercase;
                 padding-left: 10px;
                 padding-right: 10px;
-
 
                 // Shrink font so text fits on small screens
                 @media(max-width: @screen-md-max) {

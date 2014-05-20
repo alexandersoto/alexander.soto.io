@@ -6781,6 +6781,11 @@ h6,
   color: white;
   font-size: 16px;
 }
+@media (max-width: 767px) {
+  #tag-line-container #tag-line {
+    font-size: 10px;
+  }
+}
 #about-me-container {
   padding-top: 60px;
   padding-bottom: 60px;
@@ -6954,6 +6959,9 @@ fieldset[disabled] #resume-container #resume-btn.active {
 #projects-container .img-overlay-wrapper {
   position: relative;
 }
+#projects-container .img-overlay-wrapper:hover .img-overlay {
+  display: block;
+}
 #projects-container .img-overlay-wrapper .img-overlay {
   color: #ffffff;
   position: absolute;
@@ -6961,12 +6969,7 @@ fieldset[disabled] #resume-container #resume-btn.active {
   width: 100%;
   top: 0;
   background-color: rgba(66, 139, 202, 0.9);
-  opacity: 0;
-  -webkit-transition: opacity 0.25s ease;
-  transition: opacity 0.25s ease;
-}
-#projects-container .img-overlay-wrapper .img-overlay:hover {
-  opacity: 1;
+  display: none;
 }
 #projects-container .img-overlay-wrapper .img-overlay h3 {
   text-transform: uppercase;
