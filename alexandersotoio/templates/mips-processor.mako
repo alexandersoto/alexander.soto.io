@@ -20,8 +20,8 @@
           <li> <a href="#exception-handler">Exception Handler and Kernel</a></li>
           <li> <a href="#virtual-memory">TLB and Virtual Memory</a></li>
         </ol>
-        <p>Below is a high level schematic of the processor. More complex elements have been seperated and shown in detail. You can also  <a href="${request.static_url('alexandersotoio:assets/static/mips-schematic.pdf')}">download a high resolution schematic</a>.</p>
-        <img src="${request.static_url('alexandersotoio:assets/static/images/mips-schematic.png')}" class="img-thumbnail img-responsive">
+        <p>Below is a high level schematic of the processor. More complex elements have been seperated and shown in detail. You can also  <a href="${request.static_url('alexandersotoio:static/mips-schematic.pdf')}">download a high resolution schematic</a>.</p>
+        <img src="${request.static_url('alexandersotoio:static/images/mips-schematic.png')}" class="img-thumbnail img-responsive">
 
 
         <h2 id="mips-core"> MIPS Core</h2>
@@ -679,11 +679,11 @@ endmodule
 
 <%block name="scripts">
 ## TODO - combine these scripts / css
-<script src="${request.static_url('alexandersotoio:assets/static/syntaxhighlighter/scripts/shCore.js')}"></script>
-<script src="${request.static_url('alexandersotoio:assets/static/syntaxhighlighter/scripts/shBrushVerilog.js')}"></script>
-<script src="${request.static_url('alexandersotoio:assets/static/syntaxhighlighter/scripts/shBrushMipsAsm.js')}"></script>
-<link  href="${request.static_url('alexandersotoio:assets/static/syntaxhighlighter/styles/shCore.css')}" rel="stylesheet">
-<link  href="${request.static_url('alexandersotoio:assets/static/syntaxhighlighter/styles/shThemeDefault.css')}" rel="stylesheet">
+<script src="${request.static_url('alexandersotoio:static/syntaxhighlighter/scripts/shCore.js')}"></script>
+<script src="${request.static_url('alexandersotoio:static/syntaxhighlighter/scripts/shBrushVerilog.js')}"></script>
+<script src="${request.static_url('alexandersotoio:static/syntaxhighlighter/scripts/shBrushMipsAsm.js')}"></script>
+<link  href="${request.static_url('alexandersotoio:static/syntaxhighlighter/styles/shCore.css')}" rel="stylesheet">
+<link  href="${request.static_url('alexandersotoio:static/syntaxhighlighter/styles/shThemeDefault.css')}" rel="stylesheet">
 
 <script>
 'use strict';

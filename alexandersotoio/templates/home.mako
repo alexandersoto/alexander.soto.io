@@ -22,7 +22,7 @@
     <div class="row">
 
       <div class="col-md-3 col-md-offset-0 col-sm-4 col-sm-offset-0 col-xs-6 col-xs-offset-3">
-        <img src="${request.static_url('alexandersotoio:assets/static/images/alexander-soto.jpg')}" class="img-circle img-responsive">
+        <img src="${request.static_url('alexandersotoio:static/images/alexander-soto.jpg')}" class="img-circle img-responsive">
       </div>
 
       <div class="col-md-9 col-sm-8 col-xs-12">
@@ -39,7 +39,7 @@
       <div class="row">
         <div class="col-xs-12 text-center">        
           <a id="resume-btn" 
-             href="${request.static_url('alexandersotoio:assets/static/alexander-soto-resume.pdf')}">
+             href="${request.static_url('alexandersotoio:static/alexander-soto-resume.pdf')}">
              <i class="fa fa-download"></i> Resume
           </a>
         </div>
@@ -115,7 +115,7 @@
         <div class="col-md-3 col-sm-4 col-xs-6">
           <a href="${request.route_url(project)}">
             <div class="img-overlay-wrapper">
-              <img src="${request.static_url('alexandersotoio:assets/static/images/' + project + '.jpg')}" class="img-responsive" alt="${project}">
+              <img src="${request.static_url('alexandersotoio:static/images/' + project + '.jpg')}" class="img-responsive" alt="${project}">
               <div class="img-overlay">
                   <div class="box-center-outer">
                     <div class="box-center-inner">

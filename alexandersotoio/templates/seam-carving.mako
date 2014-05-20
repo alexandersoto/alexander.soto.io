@@ -1,11 +1,11 @@
 ###############################################################################
-## Dynamic Image Resizing
+## Seam Carving
 ###############################################################################
 
 <%inherit file="/site.mako"/>
 
 <%block name="css">
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css">
+<link rel="stylesheet" href="${request.static_url('alexandersotoio:static/css/jquery-ui-1.10.4.css')}">
 
 <style>
 #resizeContainer {
@@ -28,7 +28,7 @@
   <div class="row">
     <div class="col-md-12">
       <h2> Header </h2>
-      <p> Explain project. </p>
+      <p> This program resizes images dynamically, based on the content of the image. It's called <a href="http://en.wikipedia.org/wiki/Seam_carving">seam carving</a>. I more detailed write up is coming, but in the meantime upload an image and resize it to see it in action! </p>
 
       <div class="row">
         <div class="col-md-12" id="resizeRow">
@@ -49,8 +49,8 @@
 
 <%block name="scripts">
 
-<script src="${request.static_url('alexandersotoio:assets/js/jquery-1.11.1.js')}"></script>
-<script src="${request.static_url('alexandersotoio:assets/js/jquery-ui-1.10.4.js')}"></script>
-<script src="${request.static_url('alexandersotoio:assets/js/seam.js')}"></script>
+<script src="${request.static_url('alexandersotoio:static/js/jquery-1.11.1.js')}"></script>
+<script src="${request.static_url('alexandersotoio:static/js/jquery-ui-1.10.4.js')}"></script>
+<script src="${request.static_url('alexandersotoio:static/js/seam.js')}"></script>
 
 </%block>
