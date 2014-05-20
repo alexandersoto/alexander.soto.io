@@ -9,7 +9,7 @@
     <div class="row">
       <div class="col-md-12">
         <h1> MIPS Processor </h1>
-        <p> Wrote a 5-stage pipelined MIPS processor as part of a computer architecture class at CMU. It includes forwarding, branch prediction, exception handling, user and kernel modes, virtual memory, and a cache with a custom TLB. I also wrote a small kernel/exception handler in assembly to support system calls and virtual memory. The full source can be found on GitHub. </p>
+        <p> This is still a work in progress/draft - the full writeup will be done in a couple weeks. Wrote a 5-stage pipelined MIPS processor as part of a computer architecture class at CMU. It includes forwarding, branch prediction, exception handling, user and kernel modes, virtual memory, and a cache with a custom TLB. I also wrote a small kernel/exception handler in assembly to support system calls and virtual memory. The full source can be found on GitHub. </p>
 
         <p> A <a href="http://en.wikipedia.org/wiki/Classic_RISC_pipeline">classic 5 stage RISC processor</a> (like MIPS) has a Fetch, Decode, Execute, Memory, and Writeback stage. Each instruction goes through each stage, and at any time there are at most 5 instructions being execute at once (one at each stage).</p>
         <ol>
