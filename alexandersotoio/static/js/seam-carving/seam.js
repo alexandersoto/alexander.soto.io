@@ -1,4 +1,4 @@
-window.SeamCarverImage = (function() {
+(function() {
     'use strict';
 
     // SeamCraver class
@@ -322,5 +322,7 @@ window.SeamCarverImage = (function() {
         return greyPixels;
     };
 
-    return SeamCarverImage;
-}());
+    // Export to window
+    window.SeamCarverImage = SeamCarverImage;
+
+})();

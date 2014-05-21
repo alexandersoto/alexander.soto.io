@@ -71,7 +71,4 @@
 <script src="${request.static_url('alexandersotoio:static/js/vendor/jquery-ui-touch-punch-0.2.3.js')}"></script>
 <script src="${request.static_url('alexandersotoio:static/js/seam-carving/seam.js')}"></script>
 <script src="${request.static_url('alexandersotoio:static/js/seam-carving/ui.js')}"></script>
-<script>
-App.init();
-</script>
 </%block>

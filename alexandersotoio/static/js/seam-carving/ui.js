@@ -1,4 +1,4 @@
-window.App = (function($, SeamCarverImage) {
+(function($, SeamCarverImage) {
     'use strict';
 
     // Contains the canvas with the image
@@ -147,11 +147,8 @@ window.App = (function($, SeamCarverImage) {
         }
     };
 
-    return {
-        init: function() {
-            ResizableImage.init(document.getElementById('image-canvas'));
-            ImageLoader.init();
-        }
-    };
+    // main()
+    ResizableImage.init(document.getElementById('image-canvas'));
+    ImageLoader.init();
 
 })(window.jQuery, window.SeamCarverImage);

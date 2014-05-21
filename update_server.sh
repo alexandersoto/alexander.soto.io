@@ -3,8 +3,12 @@
 PID_8080="pserve_8080.pid"
 PID_8081="pserve_8081.pid"
 
-# Update app
+# Update python app
+git pull
 ../bin/python setup.py develop
+
+# Clear mod pagespeed cache
+sudo touch /var/ngx_pagespeed_cache/cache.flush
 
 # Stop the waitress servers
 ../bin/pserve --stop-daemon --pid-file=$PID_8080
