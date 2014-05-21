@@ -4,6 +4,8 @@
 
 <%inherit file="/site.mako"/>
 
+<%block name="title">Overclocking Class - Alexander Soto</%block>
+  
 <%block name="content">
 <div class="container project-container">
   <div class="row">

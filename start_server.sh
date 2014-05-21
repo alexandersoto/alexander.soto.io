@@ -3,6 +3,9 @@
 PID_8080="pserve_8080.pid"
 PID_8081="pserve_8081.pid"
 
+# Update app
+../bin/python setup.py develop
+
 # Stop the waitress servers
 ../bin/pserve --stop-daemon --pid-file=$PID_8080
 ../bin/pserve --stop-daemon --pid-file=$PID_8081

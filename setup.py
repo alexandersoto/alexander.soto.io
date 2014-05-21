@@ -6,7 +6,7 @@ requires = [
     'pyramid              == 1.5',    # Web framework
     'pyramid_mako         == 1.0.2',  # Templating library
     'pyramid_debugtoolbar == 2.0.2',  # Used by pyramid for debugging toolbar
-    'waitress             == 0.8.8',  # Python WSGI server
+    'waitress             == 0.8.9'   # Python WSGI server
 ]
 
 setup(name='AlexanderSotoIo',
