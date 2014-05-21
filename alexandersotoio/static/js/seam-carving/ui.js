@@ -8,6 +8,7 @@
         seamCarverImage: null,
         $resizeContainer: $('#resize-container'),
         displayOption: null,
+        showSeams: true,
 
         init: function (canvas) {
             this.canvas = canvas;
@@ -17,10 +18,18 @@
                 stop: this.stopResize.bind(this)
             });
             
-            // Change the display option based on the radio button
-            this.displayOption = $('input[name="display-options"]:checked').val();
-            $('input[name="display-options"]').change(function(e) {
+            // Change the display option based on input
+            // Radios
+            this.displayOption = $('input[name="display-option"]:checked').val();
+            $('input[name="display-option"]').change(function(e) {
                 this.displayOption = e.target.value;
+                this.paint();
+            }.bind(this));
+
+            // Checkbox
+            this.showSeams = $('input[name="show-seams"]').is(':checked');
+            $('input[name="show-seams"]').change(function(e) {
+                this.showSeams = e.target.checked;
                 this.paint();
             }.bind(this));
         },
@@ -58,21 +67,22 @@
 
             // Choose pixels based on which view user wants to see
             var pixels;
-            switch(this.displayOption) {
-                case 'seam':
+            if (this.showSeams) {
+                if (this.displayOption === 'original') {
                     pixels = this.seamCarverImage.seamPixels;
-                    break;
-                case 'gradient':
-                    pixels = this.seamCarverImage.gradientPixels;
-                    break;
-                case 'gradient-seam':
+                }
+                else {
                     pixels = this.seamCarverImage.seamGradientPixels;
-                    break;
-                case 'no-seam':
-                    pixels = this.seamCarverImage.pixels;
-                    break;
+                }
             }
-
+            else {
+                if (this.displayOption === 'original'){
+                    pixels = this.seamCarverImage.pixels;
+                }
+                else {
+                    pixels = this.seamCarverImage.gradientPixels;
+                }
+            }
             this.context.putImageData(pixels, 0, 0);
         },
 

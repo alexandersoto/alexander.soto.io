@@ -1,7 +1,7 @@
 (function() {
     'use strict';
 
-    // SeamCraver class
+    // SeamCraver constructor
     function SeamCarverImage(pixels) {
         this.canvas = document.createElement('canvas');
         this.context = this.canvas.getContext('2d');
@@ -23,9 +23,11 @@
         var data = new Uint32Array(buf);
         data[1] = 0x0a0b0c0d;
 
-        this.isLittleEndian = true;
         if (buf[4] === 0x0a && buf[5] === 0x0b && buf[6] === 0x0c && buf[7] === 0x0d) {
             this.isLittleEndian = false;
+        }
+        else {
+            this.isLittleEndian = true;
         }
     };
 
@@ -65,14 +67,13 @@
         // Get the seam we want to remove
         var seam = this.findSeam();
 
-        // Now fill in the smaller image
+        // Now fill in the smaller image by removing the seam
         for (var row = 0; row < height; row++) {
             var colToRemove = seam[row];
 
-            var newPixelIndexBase = (row * newWidth);
-            var oldPixelIndexBase = (row * width);
+            var newPixelIndexBase = row * newWidth;
+            var oldPixelIndexBase = row * width;
 
-            // Don't copy pixels when col == colToRemove
             for (var col = 0; col < width; col++) {
                 var newPixelIndex = newPixelIndexBase + col;
                 var oldPixelIndex = oldPixelIndexBase + col;
@@ -90,6 +91,7 @@
                     newGreyPixles32[newPixelIndex] = greyPixels32[oldPixelIndex];
                 }
 
+                // Don't copy pixels when col == colToRemove
                 // Insert a red line where the seam we're removing is for visualization
                 else {
 
@@ -154,14 +156,14 @@
                 if (j === 0) {
                     seamTable[i*width + j] = this.getPixel(data, i, j, width) +
                         Math.min(seamTable[rowOffset + j],
-                                seamTable[rowOffset + j + 1]);
+                                 seamTable[rowOffset + j + 1]);
                 }
 
                 // Similarly, if we are at the right most edge, we can't check any pixels to the right
                 else if (j === (width - 1)) {
                     seamTable[i*width + j] = this.getPixel(data, i, j, width) +
                         Math.min(seamTable[rowOffset + j - 1],
-                                seamTable[rowOffset + j]);
+                                 seamTable[rowOffset + j]);
                 }
 
                 // Check left, center, right
@@ -175,13 +177,13 @@
         }
 
         // Find the minimum seam by checking the bottom col
-        // whichever has the smallest is the end point of the minimum seam
+        // Whichever has the smallest is the end point of the minimum seam
         var minCol = 0;
         for (j = 0; j < width; j++) {
             if (this.getPixel(data, height - 1, j, width) <
-                    this.getPixel(data, height - 1, minCol, width)) {
-                        minCol = j;
-                    }
+                this.getPixel(data, height - 1, minCol, width)) {
+                    minCol = j;
+            }
         }
 
         // Backtrack to get the seam vector
@@ -294,7 +296,7 @@
         return gradientPixels;
     };
 
-    // Lets us access pixel as if it was a 2d array (only works for greyscale)
+    // Lets us access pixel as if it was a 2d array (only works for greyscale data)
     SeamCarverImage.prototype.getPixel = function (data, row, col, width) {
         return data[(row * width + col) * 4];
     };
