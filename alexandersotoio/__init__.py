@@ -12,7 +12,7 @@ from pyramid.config import Configurator
 HOME_DIR = os.path.abspath(os.path.split(inspect.getfile(inspect.currentframe()))[0])
 
 # Every project route name / mako / url will be based on this string
-PROJECTS = ['seam-carving', 'mips-processor', 'overclocking-class']
+PROJECTS = ['seam-carving', 'chess-bot', 'mips-processor', 'overclocking-class']
 
 """
 ['tunessence', 'chess-bot', 'mips-processor', 'coprocessor',

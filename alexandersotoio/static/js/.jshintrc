@@ -98,24 +98,8 @@
 
     // == Globals ======================================================
     "globals"       : {         // Custom globals
-        "define"    : false,    // require.js
-        "require"   : false,    // require.js
-        "requirejs" : false,    // require.js
-        "analytics" : false     // analytics.js (Segment.io)
-
-        // Jasmine globals
-        // Too many for my taste, so live with false positives
-        // instead of letting all these globals go for the rest of our app
-        //"jasmine"    : false,
-        //"spyOn"      : false,
-        //"it"         : false,
-        //"xit"        : false,
-        //"expect"     : false,
-        //"runs"       : false,
-        //"waitsFor"   : false,
-        //"beforeEach" : false,
-        //"afterEach"  : false,
-        //"describe"   : false,
-        //"xdescribe"  : false
+        //"define"    : false,    // require.js
+        //"require"   : false,    // require.js
+        //"requirejs" : false,    // require.js
     }
 }

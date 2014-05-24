@@ -9,6 +9,7 @@
         $resizeContainer: $('#resize-container'),
         displayOption: null,
         showSeams: true,
+        animating: false,
 
         init: function (canvas) {
             this.canvas = canvas;
@@ -36,6 +37,10 @@
 
         // A new image is loaded - reset everything
         load: function (image) {
+            if (this.animating) {
+                return;
+            }
+
             this.image = image;
             this.canvas.width = image.width;
             this.canvas.height = image.height;
@@ -85,8 +90,12 @@
             }
             this.context.putImageData(pixels, 0, 0);
         },
-
+        
         stopResize: function (e, ui) {
+            if (this.animating) {
+                return;
+            }
+
             var difference = ui.originalSize.width - ui.size.width;
 
             // Set the resize box to what will be its final value
@@ -106,19 +115,26 @@
                 this.paint();
             }.bind(this);
 
+            
             // Don't allow resizing while we're animating
             this.$resizeContainer.resizable('option', 'disabled', true);
-            for (var i = difference; i > 0; i--) {
+            this.animating = true;
 
-                // use setTimeout to show updates to user       
-                window.setTimeout(removeSeam);
+            
+            var delay = 0;
+            for (var i = difference; i > 0; i--) {
+                delay += 50;
+
+                // use setTimeout to show updates to user. Delay is used to make it work on Firefox 
+                window.setTimeout(removeSeam, delay);
             }
 
             // Set width of resize box once everything is complete and renable resizing
             window.setTimeout(function() {
                 this.$resizeContainer.width(this.seamCarverImage.pixels.width);
                 this.$resizeContainer.resizable('option', 'disabled', false);
-            }.bind(this));
+                this.animating = false;
+            }.bind(this), delay);
         }
     };
 
