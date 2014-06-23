@@ -11,7 +11,7 @@
   <div class="row">
     <div class="col-md-12">
       <h2> Tunessence </h2>
-      <p> I founded and built <a href="https://tunessence.com">Tunessence</a> with <a href="http://mattbauch.com">Matthew Bauch</a>, with the vision of building the Rosetta Stone of music. Software has enabled new experiences, and we want to leverage that to create new interactive and entertaining ways to teach music. We went through the <a href="http://alphalab.org">AlphaLab</a> program and raised a couple rounds of additional financing. Our investors include <a href="https://www.innovationworks.org/">Innovation Works</a> and <a href="http://www.cmu.edu/open-field/our-companies/Fall%202012%20Cycle/index.html">CMU</a>.</p>
+      <p> I founded and built <a href="https://tunessence.com">Tunessence</a> with <a href="http://mattbauch.com">Matthew Bauch</a>, with the vision of building the Rosetta Stone of music. We want to leverage software to create new interactive and entertaining ways to teach music. We went through the <a href="http://alphalab.org">AlphaLab</a> program and raised a couple rounds of additional financing. Our investors include <a href="https://www.innovationworks.org/">Innovation Works</a> and <a href="http://www.cmu.edu/open-field/our-companies/Fall%202012%20Cycle/index.html">CMU</a>.</p>
 
       <p> I write a lot of code, work on product design and vision, fundraise, recruit employees, manage the financials, and lead business development and marketing.</p>
 
