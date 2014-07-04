@@ -28,7 +28,7 @@
 
   <div class="row" >
     <div class="col-md-12">
-      <iframe src="https://tunessence.com/tabs?id=5220360e5bb7c5bdc2d9fbbf" frameborder="0" height="700" width="100%" id="tunessence-iframe"></iframe>  
+      <iframe src="https://tunessence.com/tabs?id=5220360e5bb7c5bdc2d9fbbf" frameborder="0" height="760" width="100%" id="tunessence-iframe"></iframe>  
     </div>
   </div>
 
