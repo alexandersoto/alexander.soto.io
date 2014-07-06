@@ -577,7 +577,7 @@ endmodule
 
 
       <h2> Kernel - Software</h2>
-      <p> You can't do anything useful with a processor without a program to run, and the first program required is a <a href="http://en.wikipedia.org/wiki/Kernel_(operating_system)">kernel</a>. The kernel I wrote in assembly supports the bare minimum for the processor to work - exception handling and (basic) virtual memory management, along with support for system calls and a user/kernel mode. While basic, without these features, the processor would not work as expected.</p>
+      <p> You can't do anything useful with a processor without a program to run, and a useful program to start with is a <a href="http://en.wikipedia.org/wiki/Kernel_(operating_system)">kernel</a>. The kernel I wrote in assembly is very simple. It supports exception handling and basic virtual memory management, along with system calls and a user/kernel mode. While basic, without these features, the processor would not work as expected.</p>
       <h3> Exception Handler </h2>
       <p> The bulk of the kernel is the exception handling logic, which reads the cause of the exception and acts accordingly. It determines the cause of the exception, resolves it (or halts if it cannot), and returns control to the main program with an ERET instruction. Because there are no functions in assembly and the exception handler may be invoked numerous times, we create a simple stack in memory to handle recursive system calls. </p>
 
@@ -836,13 +836,9 @@ otherExceptions:
 </%block>
 
 <%block name="scripts">
-## TODO - combine these scripts / css
-<script src="${request.static_url('alexandersotoio:static/syntaxhighlighter/scripts/shCore.js')}"></script>
-<script src="${request.static_url('alexandersotoio:static/syntaxhighlighter/scripts/shBrushVerilog.js')}"></script>
-<script src="${request.static_url('alexandersotoio:static/syntaxhighlighter/scripts/shBrushMipsAsm.js')}"></script>
-<link  href="${request.static_url('alexandersotoio:static/syntaxhighlighter/styles/shCore.css')}" rel="stylesheet">
-<link  href="${request.static_url('alexandersotoio:static/syntaxhighlighter/styles/shThemeDefault.css')}" rel="stylesheet">
-
+<script src="${request.static_url('alexandersotoio:static/js/mips-processor/shCore.js')}"></script>
+<script src="${request.static_url('alexandersotoio:static/js/mips-processor/shBrushVerilog.js')}"></script>
+<script src="${request.static_url('alexandersotoio:static/js/mips-processor/shBrushMipsAsm.js')}"></script>
 <script>
 'use strict';
 SyntaxHighlighter.defaults['toolbar'] = false;
