@@ -2,14 +2,7 @@
 # Sets up the application, the "main" function
 ###############################################################################
 
-import inspect
-import os
-from subprocess import Popen, PIPE
-
 from pyramid.config import Configurator
-
-# Path of the application
-HOME_DIR = os.path.abspath(os.path.split(inspect.getfile(inspect.currentframe()))[0])
 
 # Every project route name / mako / url will be based on this string
 PROJECTS = ['tunessence', 'chess-bot', 'seam-carving', 'mips-processor', 'overclocking-class']

@@ -9,13 +9,22 @@
 <%block name="content">
 
 <div class="container project-container">
+
   <div class="row">
     <div class="col-md-12">
       <h2> Chess Bot </h2>
       <p> This is a full chess program with a chess engine to play against. It supports both human vs. computer and computer vs. computer matches. The source code can be found on <a href="https://github.com/alexandersoto/chess-bot">GitHub</a>.</p>
+    </div>
+  </div>
 
-      <p><img class="img-responsive" src="${request.static_url('alexandersotoio:static/images/chess.png')}"></p>
+  <div class="row">
+    <div class="col-lg-6 col-lg-offset-3 col-md-10 col-md-offset-1">
+      <img class="img-responsive" src="${request.static_url('alexandersotoio:static/images/chess.png')}" alt="Chess program">
+    </div>
+  </div>
 
+  <div class="row">
+    <div class="col-md-12">
       <h3> Installation Instructions </h3>
       <p> <a href="${request.static_url('alexandersotoio:static/chess.jar')}">Download chess.jar</a>. To run the chess program, double click on "chess.jar" and it should launch. It requires <a href="http://www.java.com/en/">Java</a> 6 or later installed. Most computers have a recent version of Java installed. 
       <h4> Issues on Windows </h4>
@@ -35,8 +44,8 @@
       <p> In addition, I cache the results of previous searches in a <a href="https://chessprogramming.wikispaces.com/Transposition+Table">transposition table</a>, which provide a substantial speed up. This bot also uses <a href="https://chessprogramming.wikispaces.com/Quiescence+Search">quiescence search</a>, <a href="https://chessprogramming.wikispaces.com/Killer+Heuristic">the killer heuristic</a>, and <a href="https://chessprogramming.wikispaces.com/Check+Extensions">check extensions</a> to improve its performance. Because chess openings are well studied, opening books are commonly used to allow programs to select moves from a pre-computed database of moves. This bot has an opening book, along with support for Polyglot books.<p>
 
       <p> Chess programs evaluate how strong a position is by giving every board a "score" through an <a href="https://chessprogramming.wikispaces.com/Evaluation">evaluation function</a>. The simplest functions calculate how many pieces are on the board and how valuable they are. If you have more points than your opponent, you're ahead. My evaluation is fairly simplistic, based mainly on the scores of pieces, positioning of pieces, and bonuses for certain piece combination (e.g., two bishops are more valuable than one, more so if there are few pawns on the board). I'd like to add <a href="https://chessprogramming.wikispaces.com/Pawn+Structure">pawn structure</a> and <a href="https://chessprogramming.wikispaces.com/King+Safety">king safety</a> to my evaluation function in the future.</p>
-
     </div>
+
   </div>
 </div>
 </%block>

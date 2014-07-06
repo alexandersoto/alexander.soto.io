@@ -12,7 +12,7 @@
     <div class="col-xs-12">
       <h2> Seam Carving </h2>
       <p> This program resizes images dynamically, based on the content of the image using a <a href="http://en.wikipedia.org/wiki/Seam_carving">seam carving</a> algorithm. It removes the least important part of the picture first. It uses dynamic programming to calculate the seams, and <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Typed_arrays">javascript typed arrays</a> to speed up computation (which means it only works in modern browsers). Source can be found on <a href="https://github.com/alexandersoto/seamcarving">GitHub</a>.</p>
-      <p> Resize the image by dragging the right edge of the picture. Toggle different views with the radio buttons. You can select or upload a different images below. </p>
+      <p> Resize the image by dragging the right edge of the picture. Toggle different views with the radio buttons. You can select or upload a different image below. </p>
 
       <div class="row">
         <div class="col-xs-12">

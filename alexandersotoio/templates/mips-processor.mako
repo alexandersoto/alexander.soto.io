@@ -11,23 +11,26 @@
   <div class="row">
     <div class="col-md-12">
       <h1> MIPS Processor </h1>
-      <p> Note - this explanation is still a draft, most parts are incomplete. I wrote a 5-stage pipelined MIPS processor as part of a computer architecture class at CMU. It includes forwarding, branch prediction, exception handling, user and kernel modes, virtual memory, and a cache with a custom TLB. I also wrote a small kernel/exception handler in assembly to support system calls and virtual memory. The full source can be found on <a href="https://github.com/alexandersoto/mips-processor">GitHub</a>. </p>
+      <p> I wrote a 5-stage pipelined MIPS processor as part of a computer architecture class at CMU. It includes forwarding, branch prediction, exception handling, user and kernel modes, virtual memory, and a cache with a custom TLB. I also wrote a small kernel/exception handler in assembly to support system calls and virtual memory. The full source can be found on <a href="https://github.com/alexandersoto/mips-processor">GitHub</a>. </p>
 
-      <p> A <a href="http://en.wikipedia.org/wiki/Classic_RISC_pipeline">classic 5 stage RISC processor</a> (like MIPS) has a Fetch, Decode, Execute, Memory, and a Writeback stage. Each instruction goes through each stage, and at any time there are at most 5 instructions being executed at once (one per stage). Below is a high level schematic of the processor. More complex elements have been separated and I elaborate on their functionality below. <a href="${request.static_url('alexandersotoio:static/mips-schematic.pdf')}">Download a high resolution schematic</a> to see more detail.</p>
-      <img src="${request.static_url('alexandersotoio:static/images/mips-processor/mips-schematic.png')}" class="img-thumbnail img-responsive">
+      <p> A <a href="http://en.wikipedia.org/wiki/Classic_RISC_pipeline">pipelined 5 stage RISC processor</a> (like MIPS) has a Fetch, Decode, Execute, Memory, and Writeback stage. Each instruction goes through each stage, and at any time there are at most 5 instructions being executed at once (one per stage). Below is a high level schematic of the processor. Complex elements have been separated and I elaborate on their functionality below. <a href="${request.static_url('alexandersotoio:static/mips-schematic.pdf')}">A full resolution schematic</a> is also available.</p>
+      <img src="${request.static_url('alexandersotoio:static/images/mips-processor/mips-schematic.png')}" class="img-responsive" alt="mips schematic">
 
       <h2> MIPS Core</h2>
-      <p> The MIPS core (<a href="https://github.com/alexandersoto/mips-processor/blob/master/rtl/mips_core.v#L64">source</a>) is where everything is wired together. </p>
+      <p> The MIPS core (<a href="https://github.com/alexandersoto/mips-processor/blob/master/rtl/mips_core.v#L64">source</a>) is the top level module where everything is wired together. It instantiates the <a href="http://en.wikipedia.org/wiki/Pipeline_(computing)">pipeline</a> registers, which are the long, narrow boxes. These allow the processor to work on multiple instructions simultaneously. In between the registers are the different stages, Fetch (inst_mem), Decode (ID), Execute (EX), Memory (MEM), and Writeback (WB). The core keeps track of one of the most important states in any processor, the program counter, which is the memory address of the next instruction.</p>
 
-      <img src="${request.static_url('alexandersotoio:static/images/mips-processor/mips-core.png')}" class="img-thumbnail img-responsive">
+      <img src="${request.static_url('alexandersotoio:static/images/mips-processor/mips-core.png')}" class="img-responsive" alt="MIPS core">
 
-      <h3> Forward Logic </h3>
-      <h3> Stall Logic </h3>
-      <h3> Exception Unit </h3>
-      <p> This handles exceptions (<a href="https://github.com/alexandersoto/mips-processor/blob/master/rtl/mips_exception_unit.v#L27">source</a>). </p>
+      <h3> Forward and Stall Logic </h3>
+      <p> Pipelining enables higher clock frequencies, by creating shorter critical paths, and it also allows for multiple instructions to be computed simultaneously. Unsurprisingly, these advantages come with a trade-off. You need additional logic to deal with corner cases. The most common issue is what is called a data hazard. This occurs when an instruction has been been executed, but has yet to be written back to the register file, and the current instruction needs the result of that calculation. This is when forwarding comes in. This module (<a href="https://github.com/alexandersoto/mips-processor/blob/master/rtl/mips_core.v#L914">source</a>) simply takes the outputs of the EX, MEM, and WB stages, and replaces incorrect reads from the register file with valid values.</p>
+
+      <p> Sometimes, data hazards are impossible to fix with forwarding. There are times when the data isn't yet available, and the processor must wait in order to continue. This happens when an instruction reads from memory, and a subsequent instructions needs the value from memory. These events are detected with the stall module (<a href="https://github.com/alexandersoto/mips-processor/blob/master/rtl/mips_core.v#L849">source</a>). The stall module places a NOP (No Operation) into the stages that must wait, until the hazard is resolved.</p>
+
+      <h3> Exception Unit </h3>      
+      <p> Exceptions happen in a processor for a variety of reasons. Something can go wrong (like an overflow or bad memory read), you can have a cache miss, or you may want to implement privileged system calls to distinguish user and kernel modes. The exception unit (<a href="https://github.com/alexandersoto/mips-processor/blob/master/rtl/mips_exception_unit.v#L27">source</a>) takes care of these situations. It reads exceptions from every stage, and outputs controls that will set the processor into the correct state when an exception occurs. This includes nullifying the misbehaving instruction and any later instructions, jumping to the memory address of the exception handler (which is written in software), and returning control to the original program once the exception is resolved. This module does not store any state information, instead controlling the coprocessor in the ID stage, which stores the relevant addresses and status codes.</p>
 
       <h2> Instruction Decode and Writeback Stage</h2>
-      <img src="${request.static_url('alexandersotoio:static/images/mips-processor/mips-id-wb-stage.png')}" class="img-thumbnail img-responsive">
+      <img src="${request.static_url('alexandersotoio:static/images/mips-processor/mips-id-wb-stage.png')}" class="img-responsive" alt="MIPS instruction decode and writeback stage">
       <p> This handles decoding the instruction into actionable signals, and writing back the result into the register file (<a href="https://github.com/alexandersoto/mips-processor/blob/master/rtl/mips_stages.v#L5">source</a>). </p>
       <h3> Decoder </h3>
       <p> This is directly responsible for translating instructions into signals (<a href="https://github.com/alexandersoto/mips-processor/blob/master/rtl/mips_decode.v#L54">source</a>). </p>
@@ -36,7 +39,7 @@
       <h2> Execute Stage </h2>
       <div class="row">
         <div class="col-md-6">
-          <img src="${request.static_url('alexandersotoio:static/images/mips-processor/mips-ex-stage.png')}" class="img-thumbnail img-responsive">
+          <img src="${request.static_url('alexandersotoio:static/images/mips-processor/mips-ex-stage.png')}" class="img-responsive" alt="MIPS execute stage">
         </div>
         <div class="col-md-6">
           <p> The execute stage is where the instruction is computed (<a href="https://github.com/alexandersoto/mips-processor/blob/master/rtl/mips_stages.v#L361">source</a>). </p>
@@ -44,8 +47,10 @@
 
       </div>
       <h3> ALU </h3>
-      <p> The <a href="http://en.wikipedia.org/wiki/Arithmetic_logic_unit">ALU (Arithmetic Logic Unit)</a> is the the core block of the processor, doing all mathematical and logical operations and is contained in the execute stage. An ALU takes 3 main inputs, two operands and a select line which is equivalent to an operator. The bulk of this logic is just a case statement based on the select line, and returning the result of the desired operation.</p>
+      <p> The <a href="http://en.wikipedia.org/wiki/Arithmetic_logic_unit">ALU (Arithmetic Logic Unit)</a> is the the core block of the processor, doing all mathematical and logical operations and is contained in the execute stage. An ALU takes 3 main inputs, two operands and a select line which is equivalent to an operator. The bulk of this logic is a case statement based on the select line, which returns the result of the desired operation.</p>
       <p>For multiply and divide operations, we outsource the work to a pipelined multiplier coprocessor, which can perform these more complicated operations within one execute clock cycle. The ALU also supports some operations to help determine the next program address (with help from the address calculator).</p>
+
+      ## Start ALU Verilog
       <pre class="brush:verilog">
 // Include the MIPS constants
 `include "internal_defines.vh"
@@ -252,6 +257,7 @@ module mips_ALU(// Outputs
   end
 endmodule
       </pre>
+      ## End ALU Verilog
 
       <h3> Address Calculator </h3>
 
@@ -260,29 +266,31 @@ endmodule
           <p> This determines what address the program counter should be at next, based on the current address, if it's jumping or if it's branching. This is sent to the Fetch stage so the correct instructions is fetched next. </p>
         </div>
         <div class="col-md-6">
-          <img src="${request.static_url('alexandersotoio:static/images/mips-processor/mips-addr-calc.png')}" class="img-thumbnail img-responsive">
+          <img src="${request.static_url('alexandersotoio:static/images/mips-processor/mips-addr-calc.png')}" class="img-responsive" alt="Address calculator">
         </div>
       </div>
 
+      ## Start Address Calculator Verilog
       <pre class="brush:verilog">
 // Find the proper next address given a target and the PC
-module calculate_next_address(  // Outputs
-                next_addr, is_non_sequential, addr_excpt,
-                // Inputs
-                pc, coprocessor_data, alu__is_zero, alu__is_greater_zero, jump_sel, branch_type, rs_data, inst);
+module calculate_next_address(// Outputs
+                              next_addr, is_non_sequential, addr_excpt,
+                              // Inputs
+                              pc, coprocessor_data, alu__is_zero, alu__is_greater_zero, jump_sel, branch_type, rs_data, inst);
+
 
   // Outputs
-  output reg  [31:0]  next_addr;      // The final jump address
-  output reg      is_non_sequential;  // True if we branch or jump
-  output reg      addr_excpt;     // Asserted if an invalid address to jump to
+  output reg  [31:0]  next_addr;         // The final jump address
+  output reg          is_non_sequential; // True if we branch or jump
+  output reg          addr_excpt;        // Asserted if an invalid address to jump to
 
   // Inputs
   input [31:0]  pc, coprocessor_data;
-  input     alu__is_zero;
-  input     alu__is_greater_zero;
+  input         alu__is_zero;
+  input         alu__is_greater_zero;
   input [1:0]   jump_sel;
   input [2:0]   branch_type;
-  input [31:0]  rs_data;    // Used for Jump to Register command
+  input [31:0]  rs_data;  // Used for Jump to Register command
   input [31:0]  inst;
 
   wire  [25:0]  target;
@@ -309,6 +317,7 @@ module calculate_next_address(  // Outputs
       next_addr = coprocessor_data;
       is_non_sequential = 1;
     end
+
     // Jump based on target (immediate from instruction)
     if(jump_sel == `JUMP_IMM) begin
       next_addr = {pc_plus4[31:28], (target << 2)};
@@ -334,6 +343,7 @@ module calculate_next_address(  // Outputs
             is_non_sequential = 1;
           end
         end
+
         // In these cases, next_addr = offset << 2
         `BRC_GTZ: begin
           if(alu__is_greater_zero && ~alu__is_zero) begin
@@ -361,12 +371,13 @@ module calculate_next_address(  // Outputs
       endcase
     end
 
-    // Hacky fix, but we don't actually use this address exception
-    // anymore! So just force it to zero
+    // We don't actually use this address exception
+    // anymore, so force it to zero
     addr_excpt = 0;
   end
 endmodule
       </pre>
+      ## End Address Calculator Verilog
 
       <h2> Memory Stage</h2>
       <div class="row">
@@ -374,14 +385,14 @@ endmodule
           <p> Describe the memory stage (<a href="https://github.com/alexandersoto/mips-processor/blob/master/rtl/mips_stages.v#L674">source</a>). </p>
         </div>
         <div class="col-md-6">
-          <img src="${request.static_url('alexandersotoio:static/images/mips-processor/mips-mem-stage.png')}" class="img-thumbnail img-responsive">
+          <img src="${request.static_url('alexandersotoio:static/images/mips-processor/mips-mem-stage.png')}" class="img-responsive" alt="MIPS memory stage">
         </div>
       </div>
 
       <h2> TLB and Virtual Memory </h2>
       <p> Describe how the tlb works and its relation to virtual memory. </p>
 
-
+      ## Start TLB Verilog
       <pre class="brush:verilog">
 // This contains the logic needed for our TLB
 
@@ -564,12 +575,15 @@ module fourBitCounter( // Outputs
   end
 endmodule
       </pre>          
+      ## End TLB Verilog
 
 
 
       <h2> Software </h2>
       <h3> Kernel and Exception Handler </h2>
       <p> Describe kernel </p>
+
+      ## Start Kernel Assembly
       <pre class="brush:asm">
 # Our small stub kernel
 .ktext
@@ -696,9 +710,12 @@ otherExceptions:
   addi $v0, $zero, 0xa
   syscall
       </pre>
+      ## End Kernel Assembly
 
 
       <h3> TLB Exception Handler </h3>
+
+      ## Start TLB Assembly      
       <pre class="brush:asm">
 # This tests if we can jump and execute simple instructions 
 # with the TLB
@@ -809,6 +826,7 @@ otherExceptions:
   .word 0x13371339
   .word 0xfa17fa17
       </pre>
+      ## End TLB Assembly      
 
     </div>
   </div>
