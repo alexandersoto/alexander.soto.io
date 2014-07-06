@@ -11,7 +11,7 @@
   <div class="row">
     <div class="col-md-12">
       <h1> MIPS Processor </h1>
-      <p> I wrote a 5-stage pipelined MIPS processor as part of a computer architecture class at CMU. It includes forwarding, branch prediction, exception handling, user and kernel modes, virtual memory, and a cache with a custom TLB. I also wrote a small kernel/exception handler in assembly to support system calls and virtual memory. The full source can be found on <a href="https://github.com/alexandersoto/mips-processor">GitHub</a>. </p>
+      <p> Note - this explanation is still a draft, most parts are incomplete. I wrote a 5-stage pipelined MIPS processor as part of a computer architecture class at CMU. It includes forwarding, branch prediction, exception handling, user and kernel modes, virtual memory, and a cache with a custom TLB. I also wrote a small kernel/exception handler in assembly to support system calls and virtual memory. The full source can be found on <a href="https://github.com/alexandersoto/mips-processor">GitHub</a>. </p>
 
       <p> A <a href="http://en.wikipedia.org/wiki/Classic_RISC_pipeline">pipelined 5 stage RISC processor</a> (like MIPS) has a Fetch, Decode, Execute, Memory, and Writeback stage. Each instruction goes through each stage, and at any time there are at most 5 instructions being executed at once (one per stage). Below is a high level schematic of the processor. Complex elements have been separated and I elaborate on their functionality below. <a href="${request.static_url('alexandersotoio:static/mips-schematic.pdf')}">A full resolution schematic</a> is also available.</p>
       <img src="${request.static_url('alexandersotoio:static/images/mips-processor/mips-schematic.png')}" class="img-responsive" alt="mips schematic">
