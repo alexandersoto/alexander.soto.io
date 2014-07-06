@@ -11,29 +11,32 @@
   <div class="row">
     <div class="col-md-12">
       <h1> MIPS Processor </h1>
-      <p> Note - this explanation is still a draft, most parts are incomplete. I wrote a 5-stage pipelined MIPS processor as part of a computer architecture class at CMU. It includes forwarding, branch prediction, exception handling, user and kernel modes, virtual memory, and a cache with a custom TLB. I also wrote a small kernel/exception handler in assembly to support system calls and virtual memory. The full source can be found on <a href="https://github.com/alexandersoto/mips-processor">GitHub</a>. </p>
+      <p> I wrote a 5-stage pipelined MIPS processor as part of a computer architecture class at CMU. It includes forwarding, branch prediction, exception handling, user and kernel modes, virtual memory, and a TLB. I also wrote a small kernel in assembly supporting system calls, exception handling, and TLB management. The full source can be found on <a href="https://github.com/alexandersoto/mips-processor">GitHub</a>. </p>
 
       <p> A <a href="http://en.wikipedia.org/wiki/Classic_RISC_pipeline">pipelined 5 stage RISC processor</a> (like MIPS) has a Fetch, Decode, Execute, Memory, and Writeback stage. Each instruction goes through each stage, and at any time there are at most 5 instructions being executed at once (one per stage). Below is a high level schematic of the processor. Complex elements have been separated and I elaborate on their functionality below. <a href="${request.static_url('alexandersotoio:static/mips-schematic.pdf')}">A full resolution schematic</a> is also available.</p>
       <img src="${request.static_url('alexandersotoio:static/images/mips-processor/mips-schematic.png')}" class="img-responsive" alt="mips schematic">
 
-      <h2> MIPS Core</h2>
-      <p> The MIPS core (<a href="https://github.com/alexandersoto/mips-processor/blob/master/rtl/mips_core.v#L64">source</a>) is the top level module where everything is wired together. It instantiates the <a href="http://en.wikipedia.org/wiki/Pipeline_(computing)">pipeline</a> registers, which are the long, narrow boxes. These allow the processor to work on multiple instructions simultaneously. In between the registers are the different stages, Fetch (inst_mem), Decode (ID), Execute (EX), Memory (MEM), and Writeback (WB). The core keeps track of one of the most important states in any processor, the program counter, which is the memory address of the next instruction.</p>
+      <h2> MIPS Core </h2>
+      <p> The MIPS core (<a href="https://github.com/alexandersoto/mips-processor/blob/master/rtl/mips_core.v#L64">source</a>) is the top-level module where everything is wired together. It instantiates the <a href="http://en.wikipedia.org/wiki/Pipeline_(computing)">pipeline</a> registers, which are the long, narrow boxes. These allow the processor to work on multiple instructions simultaneously. Between the registers are the different stages, Fetch (inst_mem), Decode (ID), Execute (EX), Memory (MEM), and Writeback (WB). The core keeps track of one of the most important states in any processor, the program counter, which is the memory address of the next instruction.</p>
 
       <img src="${request.static_url('alexandersotoio:static/images/mips-processor/mips-core.png')}" class="img-responsive" alt="MIPS core">
 
       <h3> Forward and Stall Logic </h3>
-      <p> Pipelining enables higher clock frequencies, by creating shorter critical paths, and it also allows for multiple instructions to be computed simultaneously. Unsurprisingly, these advantages come with a trade-off. You need additional logic to deal with corner cases. The most common issue is what is called a data hazard. This occurs when an instruction has been been executed, but has yet to be written back to the register file, and the current instruction needs the result of that calculation. This is when forwarding comes in. This module (<a href="https://github.com/alexandersoto/mips-processor/blob/master/rtl/mips_core.v#L914">source</a>) simply takes the outputs of the EX, MEM, and WB stages, and replaces incorrect reads from the register file with valid values.</p>
+      <p> Pipelining enables higher clock frequencies, by creating shorter critical paths, and it also allows for multiple instructions to be computed simultaneously. Unsurprisingly, these advantages come with a trade-off. You need additional logic to deal with corner cases. The most common issue is what is called a data hazard. This occurs when an instruction has been executed, but has yet to be written back to the register file, and the current instruction needs the result of that calculation. This is when forwarding comes in. This module (<a href="https://github.com/alexandersoto/mips-processor/blob/master/rtl/mips_core.v#L914">source</a>) simply takes the outputs of the EX, MEM, and WB stages, and replaces incorrect reads from the register file with valid values.</p>
 
-      <p> Sometimes, data hazards are impossible to fix with forwarding. There are times when the data isn't yet available, and the processor must wait in order to continue. This happens when an instruction reads from memory, and a subsequent instructions needs the value from memory. These events are detected with the stall module (<a href="https://github.com/alexandersoto/mips-processor/blob/master/rtl/mips_core.v#L849">source</a>). The stall module places a NOP (No Operation) into the stages that must wait, until the hazard is resolved.</p>
+      <p> Sometimes, data hazards are impossible to fix with forwarding. There are times when the data isn't yet available, and the processor must wait in order to continue. For example, this would happen when an instruction reads from memory, and a subsequent instruction needs that value from memory. These events are detected with the stall module (<a href="https://github.com/alexandersoto/mips-processor/blob/master/rtl/mips_core.v#L849">source</a>). The stall module places NOP (No Operation) instructions into the stages that must wait, until the hazard is resolved.</p>
 
       <h3> Exception Unit </h3>      
-      <p> Exceptions happen in a processor for a variety of reasons. Something can go wrong (like an overflow or bad memory read), you can have a cache miss, or you may want to implement privileged system calls to distinguish user and kernel modes. The exception unit (<a href="https://github.com/alexandersoto/mips-processor/blob/master/rtl/mips_exception_unit.v#L27">source</a>) takes care of these situations. It reads exceptions from every stage, and outputs controls that will set the processor into the correct state when an exception occurs. This includes nullifying the misbehaving instruction and any later instructions, jumping to the memory address of the exception handler (which is written in software), and returning control to the original program once the exception is resolved. This module does not store any state information, instead controlling the coprocessor in the ID stage, which stores the relevant addresses and status codes.</p>
+      <p> Exceptions happen in a processor for a variety of reasons. Something can go wrong (like an overflow or invalid memory read), you can have a cache miss, or you may want to implement privileged system calls to distinguish user and kernel modes. The exception unit (<a href="https://github.com/alexandersoto/mips-processor/blob/master/rtl/mips_exception_unit.v#L27">source</a>) takes care of these situations. It reads exceptions from every stage and outputs controls that will set the processor into the correct state when an exception occurs. This includes nullifying the misbehaving instruction and any later instructions, jumping to the memory address of the exception handler (which is written in software), and returning control to the original program once the exception is resolved. This module does not store any state information, instead controlling the coprocessor in the ID stage, which stores the relevant addresses and status codes.</p>
 
       <h2> Instruction Decode and Writeback Stage</h2>
+      <p> Although Decode and Writeback are two different stages in the pipeline, they share one of the most important parts of the processor, the <a href="http://en.wikipedia.org/wiki/Register_file">register file</a>, so they share the same module (<a href="https://github.com/alexandersoto/mips-processor/blob/master/rtl/mips_stages.v#L5">source</a>). The register file is an array of registers that holds the result of computations and reads from RAM. It is the fastest form of memory in a computer.</p>
+      <p> The ID stage is responsible for decoding an instruction into control signals that determine what the rest of the processor does. If an ADD instruction is decoded, this stage reads the two values to be added from the register file, and lets the remaining stages know how to handle the operands.</p>
+      <p> The WB stage is the simplest stage. It has an enable line, a value to write, and the address to write it to. It takes these inputs and writes the result into the correct register in the register file.</p>
       <img src="${request.static_url('alexandersotoio:static/images/mips-processor/mips-id-wb-stage.png')}" class="img-responsive" alt="MIPS instruction decode and writeback stage">
-      <p> This handles decoding the instruction into actionable signals, and writing back the result into the register file (<a href="https://github.com/alexandersoto/mips-processor/blob/master/rtl/mips_stages.v#L5">source</a>). </p>
+
       <h3> Decoder </h3>
-      <p> This is directly responsible for translating instructions into signals (<a href="https://github.com/alexandersoto/mips-processor/blob/master/rtl/mips_decode.v#L54">source</a>). </p>
+      <p> The instruction decoding logic has its own module (<a href="https://github.com/alexandersoto/mips-processor/blob/master/rtl/mips_decode.v#L54">source</a>), which is instantiated in the MIPS core. However, it is still considered part of the ID stage (it is the large demultiplexer above the ID stage). This module takes an instruction and determines what each stage should do, by sending control signals through the pipeline registers. This is where the magical translation between assembly language and physical signals occurs.</p>
 
 
       <h2> Execute Stage </h2>
@@ -42,19 +45,16 @@
           <img src="${request.static_url('alexandersotoio:static/images/mips-processor/mips-ex-stage.png')}" class="img-responsive" alt="MIPS execute stage">
         </div>
         <div class="col-md-6">
-          <p> The execute stage is where the instruction is computed (<a href="https://github.com/alexandersoto/mips-processor/blob/master/rtl/mips_stages.v#L361">source</a>). </p>
+          <p> Instructions are calculated in the execute stage (<a href="https://github.com/alexandersoto/mips-processor/blob/master/rtl/mips_stages.v#L361">source</a>). If it's a simple arithmetic operation, then the result is computed. If it's a memory operation like a read or write, then the offsets and appropriate signals for the memory stage are calculated. This stage also determines if the next instruction is sequential or a branch, and calculates the next value of the program counter accordingly. </p>
         </div>
-
       </div>
+
       <h3> ALU </h3>
-      <p> The <a href="http://en.wikipedia.org/wiki/Arithmetic_logic_unit">ALU (Arithmetic Logic Unit)</a> is the the core block of the processor, doing all mathematical and logical operations and is contained in the execute stage. An ALU takes 3 main inputs, two operands and a select line which is equivalent to an operator. The bulk of this logic is a case statement based on the select line, which returns the result of the desired operation.</p>
+      <p> The <a href="http://en.wikipedia.org/wiki/Arithmetic_logic_unit">ALU (Arithmetic Logic Unit)</a> is the core block of the processor, doing all mathematical and logical operations. It is contained in the execute stage. An ALU takes 3 main inputs - two operands and a select line that is equivalent to an operator. The bulk of this logic is a case statement based on the select line, which returns the result of the desired operation.</p>
       <p>For multiply and divide operations, we outsource the work to a pipelined multiplier coprocessor, which can perform these more complicated operations within one execute clock cycle. The ALU also supports some operations to help determine the next program address (with help from the address calculator).</p>
 
       ## Start ALU Verilog
       <pre class="brush:verilog">
-// Include the MIPS constants
-`include "internal_defines.vh"
-
 ////
 //// mips_ALU: Performs all arithmetic and logical operations
 ////
@@ -263,7 +263,7 @@ endmodule
 
       <div class="row">
         <div class="col-md-6">
-          <p> This determines what address the program counter should be at next, based on the current address, if it's jumping or if it's branching. This is sent to the Fetch stage so the correct instructions is fetched next. </p>
+          <p> The address calculator determines what the value of the program counter should be next, based on the current address, type of branch, and branch offset. It uses the ALU to determine if it's a branch or not. The result is sent to the Fetch stage so the correct instruction is fetched next. </p>
         </div>
         <div class="col-md-6">
           <img src="${request.static_url('alexandersotoio:static/images/mips-processor/mips-addr-calc.png')}" class="img-responsive" alt="Address calculator">
@@ -272,7 +272,9 @@ endmodule
 
       ## Start Address Calculator Verilog
       <pre class="brush:verilog">
-// Find the proper next address given a target and the PC
+////
+//// calculate_next_address: Find the proper next address given a target and the PC
+////
 module calculate_next_address(// Outputs
                               next_addr, is_non_sequential, addr_excpt,
                               // Inputs
@@ -382,49 +384,50 @@ endmodule
       <h2> Memory Stage</h2>
       <div class="row">
         <div class="col-md-6">
-          <p> Describe the memory stage (<a href="https://github.com/alexandersoto/mips-processor/blob/master/rtl/mips_stages.v#L674">source</a>). </p>
+          <p> The memory stage (<a href="https://github.com/alexandersoto/mips-processor/blob/master/rtl/mips_stages.v#L674">source</a>) simply reads and writes values to memory. Only a small amount of data can be held in the register file, so most data is stored in memory (RAM). This stage is directly connected to RAM, and masks reads so that the appropriate bytes are sent to the writeback stage. </p>
         </div>
         <div class="col-md-6">
           <img src="${request.static_url('alexandersotoio:static/images/mips-processor/mips-mem-stage.png')}" class="img-responsive" alt="MIPS memory stage">
         </div>
       </div>
 
-      <h2> TLB and Virtual Memory </h2>
-      <p> Describe how the tlb works and its relation to virtual memory. </p>
+      <h2> Virtual Memory and TLB </h2>
+      <p> One of the most important abstractions in computing is <a href="http://en.wikipedia.org/wiki/Virtual_memory">virtual memory</a>, which maps the physical addresses of memory to a linear array of addresses in software. This allows programs to assume that they are the only ones using memory, improves security, and sometimes lets programs use more memory than the system physically has via paging. This processor supports virtual memory, translating addresses in the MIPS core. </p>
 
+      <p> The mapping between virtual and physical addresses is done with a <a href="http://en.wikipedia.org/wiki/Page_table">page table</a>. However, going through memory to translate every address is inefficient and not practical. Therefore, a cache called a <a href="http://en.wikipedia.org/wiki/Translation_lookaside_buffer"> Translation Lookaside Buffer (TLB)</a> is used to speed up the process. This cache returns the translation immediately, or if it's not found, raises a TLB miss exception. It's the same as other exceptions, except it goes to a different handler, which is tasked with loading the TLB with the translation from the page table.</p>
       ## Start TLB Verilog
       <pre class="brush:verilog">
-// This contains the logic needed for our TLB
-
-// Module that the core will use to interface with the TLB
-module tlb_interface( // Outputs
-            output reg [31:0]   inst_physical_address, mem_physical_address,
-            output reg      inst_translation_miss, mem_translation_miss, mem_is_writable,
-            // Inputs
-            input [31:0]    inst_virtual_address, mem_virtual_address,
-            input [4:0]     writeIndex,
-            input [31:0]    writeTag, writeData,
-            input       writeEnable, clk, rst_b);
+////
+//// tlb_interface: Module that the core will use to interface with the TLB
+////
+module tlb_interface(// Outputs
+                     output reg [31:0] inst_physical_address, mem_physical_address,
+                     output reg        inst_translation_miss, mem_translation_miss, mem_is_writable,
+                     // Inputs
+                     input [31:0]      inst_virtual_address, mem_virtual_address,
+                     input [4:0]       writeIndex,
+                     input [31:0]      writeTag, writeData,
+                     input             writeEnable, clk, rst_b);
 
   // These contian the PFN's 
   wire [31:0] inst_tlb_data, mem_tlb_data;
-  wire    inst_hit, mem_hit;
+  wire        inst_hit, mem_hit;
 
   // Crete the TLB itself
-  mips_tlb  TLB_Memory( // Outputs  
-              .readData_1(inst_tlb_data),
-              .readData_2(mem_tlb_data), 
-              .hit_1(inst_hit),
-              .hit_2(mem_hit),
-              // Inputs     
-              .readTag_1(inst_virtual_address),
-              .readTag_2(mem_virtual_address),
-              .writeIndex(writeIndex),  
-              .writeTag(writeTag),
-              .writeData(writeData), 
-              .writeEnable(writeEnable),
-              .clk(clk), 
-              .rst_b(rst_b)); 
+  mips_tlb  TLB_Memory(// Outputs  
+                       .readData_1(inst_tlb_data),
+                       .readData_2(mem_tlb_data), 
+                       .hit_1(inst_hit),
+                       .hit_2(mem_hit),
+                       // Inputs     
+                       .readTag_1(inst_virtual_address),
+                       .readTag_2(mem_virtual_address),
+                       .writeIndex(writeIndex),  
+                       .writeTag(writeTag),
+                       .writeData(writeData), 
+                       .writeEnable(writeEnable),
+                       .clk(clk), 
+                       .rst_b(rst_b)); 
 
   // Logic to differentiate between unmapped and mapped address locations
   always @ (*) begin
@@ -434,12 +437,11 @@ module tlb_interface( // Outputs
     mem_translation_miss  = 0;
     mem_is_writable       = 1;
 
-    // If instuction memory is unmapped, just pass it through after
-    // removing the offsets
+    // If instuction memory is unmapped, just pass
+    // it through after removing the offsets
     if( (inst_virtual_address >= `KSEG0_START) &&
       (inst_virtual_address <= `KSEG0_END)) begin
       inst_physical_address = (inst_virtual_address - `KSEG0_START);
-
     end
     else if( (inst_virtual_address >= `KSEG1_START) &&
          (inst_virtual_address <= `KSEG1_END)) begin
@@ -459,7 +461,6 @@ module tlb_interface( // Outputs
     if( (mem_virtual_address >= `KSEG0_START) &&
       (mem_virtual_address <= `KSEG0_END)) begin
       mem_physical_address = (mem_virtual_address - `KSEG0_START);
-
     end
     else if( (mem_virtual_address >= `KSEG1_START) &&
          (mem_virtual_address <= `KSEG1_END)) begin
@@ -474,22 +475,22 @@ module tlb_interface( // Outputs
       // If we miss, while we are actually accessing the TLB assert that we missed
       mem_translation_miss  = ~mem_hit;
 
-      // It is writable only if the D bit is asserted, and we've
-      // accessed the TLB
+      // It is writable only if the D bit is asserted,
+      // and we've accessed the TLB
       mem_is_writable = mem_tlb_data[10];     
     end
   end
 endmodule
 
 // This is the actual TLB memory
-module mips_tlb( // Outputs
-        output reg [31:0] readData_1, readData_2, 
-        output reg      hit_1, hit_2,
-        // Inputs     
-        input [31:0]    readTag_1, readTag_2,
-        input [4:0]     writeIndex, 
-        input [31:0]    writeTag, writeData, 
-        input         writeEnable, clk, rst_b); 
+module mips_tlb(// Outputs
+                output reg [31:0] readData_1, readData_2, 
+                output reg        hit_1, hit_2,
+                // Inputs     
+                input [31:0]      readTag_1, readTag_2,
+                input [4:0]       writeIndex, 
+                input [31:0]      writeTag, writeData, 
+                input             writeEnable, clk, rst_b); 
 
 
   // Define our two data elements for the cache
@@ -499,8 +500,8 @@ module mips_tlb( // Outputs
   integer j; 
 
   // This resets both the tag and data if rst_b is 0
-  // Otherwise, if we have enable asserted then write both
-  // the tag and data
+  // Otherwise, if we have enable asserted
+  // then write both the tag and data
   always @ (posedge clk) begin 
     if (rst_b == 1'b0) begin 
       for(i = 0; i < 32; i = i+1) begin
@@ -516,11 +517,7 @@ module mips_tlb( // Outputs
 
   // Reading the TLB, we will return the data but it is only valid
   // if the tag matches and we assert hit
-  // Not sure if to be sensitive to selected inputs or *. If selected inputs
-  // are put in list then synth tool gives warning.
-  // If star is put, then simulator gives warning.
   always @(readTag_1, readTag_2) begin
-//  always @(*) begin
 
     // We assume no hit
     hit_1 = 1'b0; 
@@ -530,11 +527,11 @@ module mips_tlb( // Outputs
     readData_1 = 32'hxxxx_xxxx;
     readData_2 = 32'hxxxx_xxxx;
 
-    // If a tag matches what we are looking for AND its valid bit is set
-    // then set hit and output the proper data
+    // If a tag matches what we are looking for AND its valid
+    // bit is set then set hit and output the proper data
     for(j = 0; j < 32; j = j+1) begin
 
-      // Only care if the first 20 bits match, as the other info is useless in this lab
+      // Only care if the first 20 bits match, as the other info is useless
       if ( (tag[j][31:12] == readTag_1[31:12]) && data[j][9] ) begin
         readData_1 = data[j];
         hit_1 = 1'b1; 
@@ -548,10 +545,10 @@ module mips_tlb( // Outputs
 endmodule
 
 // Simple counter that counts to 4
-module fourBitCounter( // Outputs
-             output [3:0] count,
-             // Inputs
-             input    clk, rst_b);
+module fourBitCounter(// Outputs
+                      output [3:0] count,
+                      // Inputs
+                      input clk, rst_b);
 
   reg [3:0] CS, NS;
   assign count = CS;
@@ -579,9 +576,10 @@ endmodule
 
 
 
-      <h2> Software </h2>
-      <h3> Kernel and Exception Handler </h2>
-      <p> Describe kernel </p>
+      <h2> Kernel - Software</h2>
+      <p> You can't do anything useful with a processor without a program to run, and the first program required is a <a href="http://en.wikipedia.org/wiki/Kernel_(operating_system)">kernel</a>. The kernel I wrote in assembly supports the bare minimum for the processor to work - exception handling and (basic) virtual memory management, along with support for system calls and a user/kernel mode. While basic, without these features, the processor would not work as expected.</p>
+      <h3> Exception Handler </h2>
+      <p> The bulk of the kernel is the exception handling logic, which reads the cause of the exception and acts accordingly. It determines the cause of the exception, resolves it (or halts if it cannot), and returns control to the main program with an ERET instruction. Because there are no functions in assembly and the exception handler may be invoked numerous times, we create a simple stack in memory to handle recursive system calls. </p>
 
       ## Start Kernel Assembly
       <pre class="brush:asm">
@@ -634,6 +632,7 @@ systemCall:
 vZeroA:
   # Halt with TESTDONE instruction
   .word 0xE 
+
 vZero20:
   # $k0 == EPC
   mfc0 $k0, $14
@@ -657,6 +656,7 @@ vZero20:
 
   # Return with ERET    
   .word 0x42000018
+
 vZero21:
   # $k0 == EPC
   mfc0 $k0, $14
@@ -676,6 +676,7 @@ vZero21:
 
   # Decrement stack pointer
   addi $k0, $k0, -4
+
   # Restore into memory
   sw $k0, 0($k1)  
 
@@ -714,11 +715,12 @@ otherExceptions:
 
 
       <h3> TLB Exception Handler </h3>
-
+      <p> The TLB is managed through software and the code below is the TLB handler along with a simple test case. When a TLB exception occurs, instead of being sent to the general exception handler, control is sent here. We're then able to read the page table (which is hardcoded in this case), and load the TLB with the appropriate values. Once completed, it returns with an ERET instruction and the processor executes the faulting instruction again. This time without a TLB miss.</p>
+      
       ## Start TLB Assembly      
       <pre class="brush:asm">
-# This tests if we can jump and execute simple instructions 
-# with the TLB
+# This tests if we can jump and execute  
+# simple instructions with the TLB
 .ktext
 
   # Change Index
@@ -803,7 +805,7 @@ otherExceptions:
 
 # This is Virtual Address 0x4000_0000
 .text 
-  # TLB Entry does not exsist, miss handle
+  # TLB Entry does not exist, miss handle
   li $9, 0x40000004
   lw $10, 0($9) 
 

@@ -34,7 +34,7 @@ def configure_routes(config, settings):
     settings -- our app setting  
     """
 
-    # For production we want a long expiration time and a cache buster
+    # For production we want a long expiration time
     # For development we want to always redownload the assets  
     static_max_age = int(settings['static_max_age'])
     config.add_static_view('/static', 'alexandersotoio:static', cache_max_age=static_max_age)
@@ -46,5 +46,3 @@ def configure_routes(config, settings):
     for project in PROJECTS:
         config.add_route(project, '/' + project)
         config.add_view(route_name=project, renderer=project + '.mako')
-
-    config.scan()
