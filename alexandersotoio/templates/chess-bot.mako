@@ -4,7 +4,7 @@
 
 <%inherit file="/site.mako"/>
 
-<%block name="title"> Chess Bot </%block>
+<%block name="title"> Chess Bot - Alexander Soto</%block>
 
 <%block name="content">
 
