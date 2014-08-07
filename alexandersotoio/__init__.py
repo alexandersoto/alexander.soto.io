@@ -5,7 +5,7 @@
 from pyramid.config import Configurator
 
 # Every project route name / mako / url will be based on this string
-PROJECTS = ['tunessence', 'seam-carving', 'chess-bot', 'mips-processor', 'overclocking-class']
+PROJECTS = ['tunessence', 'seam-carving', 'chess-bot', 'mips-processor']
 
 """
 ['tunessence', 'seam-carving', 'chess-bot', 'mips-processor', 'coprocessor', 'overclocking-class']
