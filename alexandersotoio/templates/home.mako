@@ -26,7 +26,7 @@
       </div>
 
       <div class="col-md-9 col-sm-8 col-xs-12">
-        <p> I'm working on <a href="https://clever.com">Clever</a>, a startup that's making it easier for developers to create educational apps. Previously I founded <a href="https://tunessence.com">Tunessence</a>, which makes learning music easier with software. I've worked at Qualcomm, NVIDIA, and the U.S. Department of Defense. I studied Electrical and Computer Engineering at CMU, graduating early with honors. I enjoy solving highly technical problems and making useful products that people love.</p>
+        <p> I'm working on <a href="https://clever.com">Clever</a>, a startup that's making it easier for developers to create educational apps. Previously I founded <a href="https://tunessence.com">Tunessence</a>, which makes learning music easier with software. I've worked at Qualcomm, NVIDIA, and the U.S. Department of Defense. I studied Electrical and Computer Engineering at CMU. I enjoy solving highly technical problems and making useful products that people love.</p>
       </div>
     </div>
   </div>
