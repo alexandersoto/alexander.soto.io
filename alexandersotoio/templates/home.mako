@@ -35,6 +35,7 @@
   <div id="resume-container">
     <div class="container">
 
+      <%doc>
       ## Download resume
       <div class="row">
         <div class="col-xs-12 text-center">        
@@ -44,6 +45,7 @@
           </a>
         </div>
       </div>
+      </%doc>
 
       ## Links
       <div class="row">
