@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# Update the OS
+sudo apt-get update
+sudo apt-get -y upgrade
+
 PID_8080="pserve_8080.pid"
 PID_8081="pserve_8081.pid"
 
