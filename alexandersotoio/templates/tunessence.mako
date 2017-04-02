@@ -58,6 +58,8 @@
 
   // Load the song given the tab that was clicked
   var loadSongHandler = function(e) {
+    e.preventDefault();
+
     var clickedSongTab = e.currentTarget;
 
     // Remove active class from all tabs
