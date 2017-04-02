@@ -5,11 +5,9 @@
 from pyramid.config import Configurator
 
 # Every project route name / mako / url will be based on this string
-PROJECTS = ['tunessence', 'seam-carving', 'chess-bot', 'mips-processor']
+PROJECTS = ['tunessence', 'seam-carving', 'chess-bot', 'connect-four', 'mips-processor', 'overclocking-class']
 
-"""
-['tunessence', 'seam-carving', 'chess-bot', 'mips-processor', 'coprocessor', 'overclocking-class']
-"""
+# TODO - coprocessor project
 
 def main(global_config, **settings):
     """ Returns our Pyramid WSGI application."""

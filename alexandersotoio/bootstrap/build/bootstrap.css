@@ -7431,6 +7431,32 @@ fieldset[disabled] #resume-container #resume-btn.active {
   border: 0;
   margin-top: 16px;
 }
+#connect-four-container {
+  /* Center canvas */
+}
+#connect-four-container #message {
+  text-align: center;
+  font-size: 22px;
+}
+#connect-four-container #connectFourBoard {
+  margin: auto;
+  display: block;
+}
+#connect-four-container button {
+  margin: 20px auto;
+  display: block;
+  color: #fff;
+  background-color: #2b53ff;
+  border: 1px solid #1e46f2;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 20px;
+}
+#connect-four-container button:hover {
+  cursor: pointer;
+  background-color: #123ae6;
+  border: 1px solid #052dd9;
+}
 /*! jQuery UI - v1.10.4 - 2014-05-20
 * http://jqueryui.com
 * Includes: jquery.ui.core.css, jquery.ui.resizable.css, jquery.ui.theme.css
