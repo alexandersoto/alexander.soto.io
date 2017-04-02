@@ -7422,7 +7422,8 @@ fieldset[disabled] #resume-container #resume-btn.active {
   padding-bottom: 20px;
 }
 #demo-day-iframe {
-  margin-bottom: 16px;
+  margin-top: 16px;
+  margin-bottom: 32px;
 }
 #tunessence-iframe {
   height: 760px;
