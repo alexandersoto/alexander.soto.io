@@ -5,7 +5,7 @@
 from pyramid.config import Configurator
 
 # Every project route name / mako / url will be based on this string
-PROJECTS = ['tunessence', 'seam-carving', 'chess-bot', 'connect-four', 'mips-processor', 'overclocking-class']
+PROJECTS = ['tunessence', 'seam-carving', 'chess-bot', 'connect-four', 'mips-processor']
 
 # TODO - coprocessor project
 
@@ -29,14 +29,14 @@ def configure_routes(config, settings):
     Keyword arguments:
 
     config -- pyramid.config Configurator
-    settings -- our app setting  
+    settings -- our app setting
     """
 
     # For production we want a long expiration time
-    # For development we want to always redownload the assets  
+    # For development we want to always redownload the assets
     static_max_age = int(settings['static_max_age'])
     config.add_static_view('/static', 'alexandersotoio:static', cache_max_age=static_max_age)
-    
+
     # Routes
     config.add_route('home', '/')
     config.add_view(route_name='home', renderer='home.mako')

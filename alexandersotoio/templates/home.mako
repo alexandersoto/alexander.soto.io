@@ -26,7 +26,7 @@
     </div>
 
     <div class="col-md-9 col-sm-8 col-xs-12">
-      <p> I'm working on <a href="https://clever.com">Clever</a>, a startup that's making it easier for developers to create educational apps. Previously I founded <a href="http://tunessence.com">Tunessence</a>, which makes learning music easier with software. I've worked at <a href="https://www.qualcomm.com">Qualcomm</a>, <a href="https://www.nvidia.com">NVIDIA</a>, and the <a href="http://www.atc.army.mil/">U.S. Department of Defense</a>. I studied Electrical and Computer Engineering at CMU. I enjoy solving highly technical problems and making useful products that people love.</p>
+      <p> I'm working on <a href="https://interviewschedule.com">Interview Schedule</a>, a startup that streamlines recruiting operations. Previously I founded <a href="http://tunessence.com">Tunessence</a>, which makes learning music easier with software. I've worked at <a href="https://clever.com">Clever</a>, <a href="https://www.qualcomm.com">Qualcomm</a>, <a href="https://www.nvidia.com">NVIDIA</a>, and the <a href="http://www.atc.army.mil/">U.S. Department of Defense</a>. I studied Electrical and Computer Engineering at <a href="https://www.cmu.edu/">CMU</a>. I enjoy solving highly technical problems and making useful products that people love.</p>
     </div>
   </div>
 </div>
